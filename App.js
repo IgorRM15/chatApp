@@ -1,0 +1,103 @@
+import React, { useState } from 'react';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, FlatList } from 'react-native';
+
+export default function App() {
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+
+  const handleMessageSend = () => {
+    if (message.trim() === '') return;
+    const newMessage = {
+      id: String(messages.length + 1),
+      text: message.trim(),
+    };
+    setMessages([...messages, newMessage]);
+    setMessage('');
+  };
+
+  const renderMessage = ({ item }) => (
+    <View style={styles.messageContainer}>
+      <Text style={styles.messageText}>{item.text}</Text>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        renderItem={renderMessage}
+        keyExtractor={(item) => item.id}
+        style={styles.messagesContainer}
+        inverted
+      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={message}
+          onChangeText={setMessage}
+          placeholder="Digite sua mensagem..."
+          placeholderTextColor="#888"
+        />
+        <TouchableOpacity style={styles.sendButton} onPress={handleMessageSend}>
+          <Text style={styles.sendButtonText}>Enviar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#d4d7ff',
+  },
+  messagesContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+  },
+  messageContainer: {
+    backgroundColor: '#400096',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 8,
+    maxWidth: '80%',
+  },
+  messageText: {
+    fontSize: 16,
+    color: '#ffffff',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#202112',
+    backgroundColor: '#202112',
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 20,
+    marginRight: 8,
+    backgroundColor: '#ffffff',
+  },
+  sendButton: {
+    backgroundColor: '#400096',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sendButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
