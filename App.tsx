@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, FlatList } from 'react-native';
 
-export default function App() {
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+interface Message {
+  id: string;
+  text: string;
+}
 
-  const handleMessageSend = () => {
+export default function App(): JSX.Element {
+  const [message, setMessage] = useState<string>('');
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  const handleMessageSend = (): void => {
     if (message.trim() === '') return;
-    const newMessage = {
+    const newMessage: Message = {
       id: String(messages.length + 1),
       text: message.trim(),
     };
@@ -15,7 +20,7 @@ export default function App() {
     setMessage('');
   };
 
-  const renderMessage = ({ item }) => (
+  const renderMessage = ({ item }: { item: Message }): JSX.Element => (
     <View style={styles.messageContainer}>
       <Text style={styles.messageText}>{item.text}</Text>
     </View>
